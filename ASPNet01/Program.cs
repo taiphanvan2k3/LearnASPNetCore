@@ -22,7 +22,7 @@ var app = builder.Build();
    =========================================================== */
 
 // StaticMiddleware
-app.UseStaticFiles(); 
+app.UseStaticFiles();
 
 app.UseRouting();
 
