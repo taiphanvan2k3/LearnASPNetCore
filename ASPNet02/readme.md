@@ -1,7 +1,7 @@
 # Kiến thức học được (05/07/2023) về phần Middleware và Pipeline:
 - Khi host chạy thì nó sẽ tiếp nhận các HTTP request. Những request khi server nhận được sẽ được cho đi qua luồng gọi là pipeline. Ta sẽ cần xậy dựng một chuỗi các middleware để request đi qua. Khi response trả về nó sẽ cũng đi qua chuỗi Middleware này nhưng đi ngược chiều lại về client
 - Khi sử dụng:
-```
+```csharp
 app.Run(async context =>
 {
     
@@ -18,10 +18,11 @@ pipeline: FirstMiddleware -> M1
 ```
 context.Items.Add("DataFirstMiddleware", $"<p>URL: {context.Request.Path}</p>");
 ```
-Chờ đến khi nào không add header nữa thì ghi ra một lượt. Do `Items là 1 Dictionary` nên lấy ra dễ dàng thông qua `key`
+*Chờ đến khi nào không add header nữa thì ghi ra một lượt. Do `Items là 1 Dictionary` nên lấy ra dễ dàng thông qua `key`*
+---
 # Tự tạo 1 Middleware
-- C1: Tạo 1 lớp và có cấu trúc:
-```
+## C1: Tạo 1 lớp và có cấu trúc:
+```csharp
 public static class UseFirstMiddlewareMethod
 {
     /// <summary>
@@ -39,8 +40,8 @@ public static class UseFirstMiddlewareMethod
     }
 }
 ```
-+ Khi sử dụng thì `app.UseMiddleware<FirstMiddleware>();`
-- C2: Tạo 1 lớp, kế thừa từ IMiddleware
+* Khi sử dụng thì `app.UseMiddleware<FirstMiddleware>();`
+## C2: Tạo 1 lớp, kế thừa từ IMiddleware
 + Để dùng được Middleware này thì cần addservice cho nó rồi mới `app.UseMiddleware<SecondMiddleware>();`
 - Header tạo ra trong HttpContext:
 ![Alt text](image-1.png)
@@ -48,8 +49,9 @@ public static class UseFirstMiddlewareMethod
 - StaticFileMiddleware cũng là một terminal middlewaee
 - EndpointRoutingMiddleware: cũng là 1 terminal middleware. Khi một request gửi đến thì nó sẽ phân tích địa chỉ url kèm với các HTTP method để nó điều hướng `HttpContext` đến 1 endpoints nào đó. Các endpoints đó được định nghĩa ở phía sau thông qua `app.UseEndpoints`
 
+---
 - Ta có thể thực hiện việc rẽ nhánh trong pipeline thông qua phương thức `app.Map ` ví dụ như sau:
-```
+```csharp
 app.Map("/admin", (app1) =>
 {
     // Cần tạo Middleware của nhánh này, tạo middleware giống hệt cách làm với nhánh chính app1.UseRouting();
