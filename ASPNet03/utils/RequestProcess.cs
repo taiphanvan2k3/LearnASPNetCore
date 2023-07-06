@@ -57,7 +57,7 @@ namespace ASPNet03.utils
             var cookiesHtml = string.Join("", listCookiesString).HtmlTag("ul");
             sb.Append(("Cookies".td() + cookiesHtml.td()).tr());
 
-            // Lấy tên và giá trí query
+            // Lấy tên và giá trị query
             var listQuery = request.Query.Select((header) => $"{header.Key}: {header.Value}".HtmlTag("li"));
             var queryHtml = string.Join("", listQuery).HtmlTag("ul");
             sb.Append(("Các Query".td() + queryHtml.td()).tr());
@@ -83,6 +83,7 @@ namespace ASPNet03.utils
 
             if (request.Method == "POST")
             {
+                // Lấy dữ liệu submit thông qua đối tượng form thuộc IFormCollection, lấy thông qua các thuộc tính submit
                 IFormCollection form = request.Form;
                 hovaten = form["hovaten"].FirstOrDefault() ?? "";
                 email = form["email"].FirstOrDefault() ?? "";
@@ -92,6 +93,31 @@ namespace ASPNet03.utils
                 // Thêm @ để có thể xuống dòng viết
                 thongbao = @$"Dữ liệu post - email: {email} - hovaten: {hovaten}
                 -password: {password} - luachon: {luachon}";
+
+                // Xử lý nếu có file upload( hình ảnh,...)
+                // Kiểm tra xem có file upload không, nếu có thì nó nằm trong IFormFileCollection
+                if (form.Files.Count > 0)
+                {
+                    string thongBaoFile = "Các fole đã upload: ";
+                    // Do đây là đọc file nên đường dẫn sẽ tính từ thư mục chứa dự án này
+                    if (!Directory.Exists("wwwroot/upload"))
+                        Directory.CreateDirectory("wwwroot/upload");
+                    foreach (IFormFile formFile in form.Files)
+                    {
+                        if (formFile.Length > 0)
+                        {
+                            // Tạo ra đường dẫn để lưu file được upload vào wwwroot/upload
+                            var filePath = "wwwroot/upload/" + formFile.FileName;
+                            thongBaoFile += $"{filePath} {formFile.Length} bytes";
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                // Copy nội dung của file được upload vào target stream
+                                await formFile.CopyToAsync(stream);
+                            }
+                        }
+                    }
+                    thongbao += "<br>" + thongBaoFile;
+                }
             }
 
 
@@ -99,7 +125,7 @@ namespace ASPNet03.utils
             // Đường dẫn tính từ thư mục chứa project hiện tại, đây đang đọc file chứ không phải href mà dùng
             // đường dẫn tuyệt đối hay tương đối của url
             var format = await File.ReadAllTextAsync("./FormSubmit.html");
-            var html = string.Format(format, hovaten, email, luachon ? "checked" : "").HtmlTag("div", "container") + thongbao.HtmlTag("div","container");
+            var html = string.Format(format, hovaten, email, luachon ? "checked" : "").HtmlTag("div", "container") + thongbao.HtmlTag("div", "container");
             return html;
         }
     }

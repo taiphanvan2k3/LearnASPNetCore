@@ -18,9 +18,9 @@ public static class HtmlHelper
                             <title>{title}</title>
                             <link rel=""stylesheet"" href=""/css/bootstrap.min.css"" />
                             <link rel=""stylesheet"" href=""/css/site.min.css"" />
-                            <script src=""/js/jquery.min.js"">
-                            </script><script src=""/js/popper.min.js"">
-                            </script><script src=""/js/bootstrap.min.js""></script> 
+                            <script src=""/js/jquery.min.js""></script>
+                            <script src=""/js/popper.min.js""></script>
+                            <script src=""/js/bootstrap.min.js""></script> 
                         </head>
                         <body>
                             {content}
@@ -106,7 +106,7 @@ public static class HtmlHelper
     {
         return @"
           <div class=""container"">
-            <div class=""jumbotron bg-warning"" style=""padding: 20px;"">
+            <div class=""bg-primary text-white rounded"" style=""padding: 20px;"">
                 <h1 class=""display-4"">Đây là một trang Web .NET Core</h1>
                 <p class=""lead"">Trang Web này xây dựng trên nền tảng  <code>.NET Core</code>,
                 chưa sử dụng kỹ thuật MVC - nhằm mục đích học tập.
@@ -134,14 +134,17 @@ public static class HtmlHelper
         string cls = (_class != null) ? $" class=\"{_class}\"" : null;
         return $"<{tag + cls}>{content}</{tag}>";
     }
+    
     public static string td(this string content, string _class = null)
     {
         return content.HtmlTag("td", _class);
     }
+
     public static string tr(this string content, string _class = null)
     {
         return content.HtmlTag("tr", _class);
     }
+    
     public static string table(this string content, string _class = null)
     {
         return content.HtmlTag("table", _class);

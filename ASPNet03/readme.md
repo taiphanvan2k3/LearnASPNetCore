@@ -1,4 +1,5 @@
 # Tích hợp webpackage
+```
 npm init -y                                         # tạo file package.json cho dự án
 npm i -D webpack webpack-cli                        # cài đặt Webpack
 npm i node-sass postcss-loader postcss-preset-env   # cài đặt các gói để làm việc với SCSS
@@ -10,6 +11,7 @@ npm install npm-watch                               # package giám sát file  t
 npm install bootstrap                               # cài đặt thư viện bootstrap
 npm install jquery                                  # cài đặt Jquery
 npm install popper.js                               # thư viện cần cho bootstrap
+```
 
 - Sử dụng package webpack để tự động build file scss thành file css, đồng thời copy các file bootstrap.min.css,bootstrap.min.js,
 jquery.min.js,popper.min.js từ các package bootstrap, jquery đã tải trong thư mục node_modules vào wwwroot
@@ -41,10 +43,10 @@ new CopyPlugin({
 
 # Cookie:
 - Là dữ liệu nhỏ do server gửi về cho các trình duyệt. Khi nhận được thì các trình duyệt sẽ lưu trữ lại để các lần sau sẽ gửi cookie này lại cho server. Thường thì sử dụng cookie để lưu trữ các phiên làm việc vd khi user đã đăng nhập thì server gửi cookie về, thì lần sau user đó đăng nhập thì trình duyệt gửi lại cookie đó lên server thì phiên làm việc đó được phục hồi và biết rằng user đã đăng nhập và không cần yêu cầu đăng nhập nữa.
-![Alt text](image-1.png)
-![Alt text](image.png)
+![Alt text](./images/image-1.png)
+![Alt text](./images/image.png)
 - Sau khi ghi cookie thì client lưu lại và khi thực hiện 1 request nó sẽ gửi kèm cookie lần trước đó lên server
-![Alt text](image-2.png)
+![Alt text](./images/image-2.png)
 
 - Thay vì tạo ra 2 method GET,POST và cả 2 làm cùng 1 nhiệm vụ chỉ khác về HTTP method thì ta có thể làm như sau:  
 Thay vì: 
@@ -82,7 +84,8 @@ endpoint.MapMethods("/Form", new string[] { "POST", "GET" }, async context =>
 });
 ```
 
-# Cách đọc nội dung 1 file:
+# Cách làm việc với File và thư mục:
+## Đọc file:
 ```csharp
 // Đường dẫn tính từ thư mục chứa project hiện tại, đây đang đọc file 
 // chứ không phải href mà dùng đường dẫn tuyệt đối hay tương đối của url
@@ -90,5 +93,12 @@ endpoint.MapMethods("/Form", new string[] { "POST", "GET" }, async context =>
 // Nếu nghĩ là dùng: "../FormSubmit.html" thì tìm file html đó trong thư mục cha của projec hiện tại
 // Còn nếu nhầm "/FormSubmit.html" thì nó tìm file html trong ổ đĩa hiện tại
 // vd D://ForSubmit.html
-var format = await File.ReadAllTextAsync("./FormSubmit.html");
+var content = await File.ReadAllTextAsync("./FormSubmit.html");
+```
+
+## Kiểm tra một thư mục có tồn tại hay không?
+```csharp
+// Do đây là đọc file nên đường dẫn sẽ tính từ thư mục chứa dự án này
+if (!Directory.Exists("wwwroot/upload"))
+    Directory.CreateDirectory("wwwroot/upload");
 ```

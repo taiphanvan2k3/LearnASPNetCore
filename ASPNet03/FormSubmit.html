@@ -2,28 +2,32 @@
 <div class="p-2 m-2 border bg-light border-danger">
     <!-- Đang dùng đường dẫn tuyệt đối /Form nên sẽ href đến http://localhost:port/Form -->
     <form method="post" action="/Form" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="hovaten">Nhập họ tên</label>
+        <div class="mb-3">
+            <label for="hovaten" class="form-label">Nhập họ tên</label>
+            <!-- Nếu muốn input ngắn lại thì bỏ vào flex-container: row -->
+            <!-- <div class="row">
+                <input name="hovaten" type="text" class="ms-3 rounded col-4" id="hovaten" placeholder="Họ và tên" value="{0}">
+            </div> -->
             <input name="hovaten" type="text" class="form-control" id="hovaten" placeholder="Họ và tên" value="{0}">
         </div>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                 placeholder="Enter email" value="{1}">
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
             <input name="password" type="password" class="form-control" id="exampleInputPassword1"
                 placeholder="Password">
         </div>
-        <div class="form-check">
+        <div class="form-check mb-3">
             <input type="checkbox" name="luachon" class="form-check-input" id="exampleCheck1" {2}>
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>
         <div class="form-group">
             <label for="exampleFormControlFile1">Upload file</label>
-            <input name="fileupload[]" type="file" multiple="multiple" class="form-control-file"
+            <input name="fileUpload"  multiple="multiple" type="file"
                 id="exampleFormControlFile1">
         </div>
 
