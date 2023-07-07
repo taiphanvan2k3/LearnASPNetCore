@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.Text;
 using ASPNet04.Options;
 using ASPNet04.Services;
@@ -20,8 +21,6 @@ namespace ASPNet04.Middlewares
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            await context.Response.WriteAsync("Show options in TestOptionsMiddleware\n");
-
             StringBuilder sb = new StringBuilder();
             sb.Append("TestOptions\n");
             sb.Append($"opt_key1 = {_testOption.opt_key1}\n");
@@ -32,7 +31,10 @@ namespace ASPNet04.Middlewares
             {
                 sb.Append(productName + "\n");
             }
-
+            System.Console.WriteLine("TestOptionMiddleware");
+            context.Items.Add("info", "Show options in TestOptionsMiddleware\n");
+            context.Items.Add("content", sb.ToString());
+            await context.Response.WriteAsync("Show options in TestOptionsMiddleware\n");
             await context.Response.WriteAsync(sb.ToString());
             await next(context);
         }

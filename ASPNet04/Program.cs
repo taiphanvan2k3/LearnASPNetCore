@@ -43,6 +43,8 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGet("/", async context =>
     {
+        string scheme = context.Request.Scheme;
+        await context.Response.WriteAsync($"Dang su dung scheme: {scheme}\n");
         await context.Response.WriteAsync("Trang chu");
     });
 
@@ -58,12 +60,14 @@ app.UseEndpoints(endpoints =>
         var k1 = subSection["k1"];
         var k2 = subSection["k2"];
 
+        string previousMessage = (context.Items["info"] as string) + (context.Items["content"] as string);
         StringBuilder sb = new StringBuilder();
         sb.Append("TestOptions\n");
         sb.Append($"opt_key1 = {opt_key1}\n");
         sb.Append($"Testoptions.opt_key2.k1 = {k1}\n");
         sb.Append($"Testoptions.opt_key2.k2 = {k2}");
 
+        await context.Response.WriteAsync(previousMessage); 
         await context.Response.WriteAsync("Show options in /ShowOption\n");
         await context.Response.WriteAsync(sb.ToString());
     });
