@@ -1,0 +1,8 @@
+@page
+@{
+    // Khi muốn dùng layout khác mà không muốn dùng Layout đã sử dụng ở _ViewStart
+    Layout = "_MyLayout2";
+    ViewData["title"] = "Second page";
+}
+<h1>Đây là trang thứ hai</h1>
+<a asp-page="FirstPage" style="color: blue; text-decoration: none;">Đi đến trang 1</a>

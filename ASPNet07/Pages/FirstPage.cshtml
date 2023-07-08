@@ -1,0 +1,52 @@
+@page "/trang-dau-tien/{loop-number:int?}"
+@* namespace của model này đã được using ở _ViewImports.cshtml *@
+@model FirstPageModel
+@{
+    // mặc định là null Layout là null, đã sử dụng
+    ViewData["title"] = "First Page";
+}
+
+@* Code khi tách phần xử lí logic qua file khác *@
+<h1 style="color: red;">@Model.title</h1>
+<h2 style="font-size: 20px; color: green;">@ViewData["mydata"]</h2>
+<p>Học lập trình ASPNet Core (<strong>@DateTime.Now</strong>)</p>
+<p>@Model.Welcome("Phan Văn Tài")</p>
+
+@{
+    var a = 2;
+    int b = 3;
+    <p>Căn bậc 2 của @a là @Math.Sqrt(a)</p>
+    <p>Giá trị của biến number đã khai báo trong function là @Model.number</p>
+    var loop_number = this.Request.RouteValues["loop-number"] ?? "0";
+    int soLanLap = Int32.Parse(loop_number.ToString());
+}
+
+@* Có thể dùng biến ở ngoài @{ } *@
+<p>Tổng của a và b là @(a + b)</p>
+<p>Số lần lặp là @soLanLap</p>
+<ul>
+    @for (int i = 1; i <= soLanLap; i++)
+    {
+        <li>Item thứ @i</li>
+    }
+</ul>
+
+<p>Dùng phương thức để in ra:</p>
+@{
+    this.PrintItem(3);
+}
+
+@* Các phương thức *@
+@functions {
+    void PrintItem(int soLanLap)
+    {
+        <p> Đây là phương thức tự xây dựng trong file cshtml. Có thể dùng được ở mọi nơi trong file này.</p>
+        <p>=> Kết quả lặp là: </p>
+        <ul>
+            @for (int i = 1; i <= soLanLap; i++)
+            {
+                <li>Item thứ @i</li>
+            }
+        </ul>
+    }
+}

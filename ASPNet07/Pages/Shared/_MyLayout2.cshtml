@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["title"]</title>
+</head>
+
+<body>
+    <div style="background: orange;font-size: 30px;">Phần Header v2</div>
+    @* Chèn nội dung html vào nội dung nào thì sử dụng @RenderBody *@
+    @RenderBody()
+    <div style="background: green;font-size: 30px;">Phần Footer v2</div>
+</body>
+
+</html>
