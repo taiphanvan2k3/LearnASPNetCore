@@ -1,0 +1,16 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    // Không muốn sử dụng layout mặc định
+    Layout = "_MasterLayout";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+@section NoiDungFooter{
+    @* Viết code ở đây, lát nó sẽ được render ra ở RenderSectionAsync *@
+    <p class="alert alert-danger">Nội dung footer của trang Privacy</p>
+}

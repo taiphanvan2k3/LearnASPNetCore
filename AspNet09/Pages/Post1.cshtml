@@ -1,0 +1,18 @@
+@page
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    // Nội dung Post1 sẽ được render vào layout _PostLayout, xong toàn bộ nội dung _PostLayout sẽ render vào _MasterLayout
+    // Do đó _PostLayout không viết cấu trúc <head> <body>
+    Layout = "_PostLayout";
+}
+<h1>Đây là Post 1</h1>
+@* Viết code ở đây, lát nó sẽ được render ra ở RenderSectionAsync *@
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Post/style.css">
+}
+
+@section NoiDungFooter{
+    <p class="alert alert-danger">Bài viết liên quan Post1</p>
+}

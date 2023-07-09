@@ -1,0 +1,20 @@
+@{
+    Layout = "_MasterLayout";
+}
+@section Styles{
+    @await RenderSectionAsync("Styles", required: false)
+}
+
+@* Chuyển tiếp section qua cho Master layout *@
+@section NoiDungFooter{
+    @await RenderSectionAsync("NoiDungFooter", required: false)
+}
+
+<div class="content">
+    <div class="menu">
+        <span>Menu trái</span>
+    </div>
+    <div class="body">
+        @RenderBody()
+    </div>
+</div>
