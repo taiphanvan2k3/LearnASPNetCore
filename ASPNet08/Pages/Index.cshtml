@@ -1,0 +1,78 @@
+﻿@page
+@using ASPNet08.Pages
+@namespace abc
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    var xinchao = @"<div class ='alert alert-danger'>Xin chào các bạn</div>";
+}
+
+@*
+- Nội dung bên trong @(...) sẽ được encode ra vd < thì &lt;
+Các kí tự bị trong sẽ bị encode
+- @if, @foreach,@switch
+*@
+<h1 class="display-4 text-danger">Cú pháp Razor - @this.Title</h1>
+<p>@Model.Abc</p>
+<ul>
+    <li>Tổng của 5 và 6 là : @(5 + 6)</li>
+    <li>Số pi là @Math.PI</li>
+    <li>Sin(Pi/4) là @Math.Sin(Math.PI/4)</li>
+    <li>@("<h1>Xin chào các bạn</h1>")</li>
+    <li>@("Cách viết @ nè")</li>
+    <li>@xinchao</li>
+    <li>Nội dung không được encode: @Html.Raw(xinchao)</li>
+    <li>@Html.Raw("<h1>Xin chào các bạn</h1>")</li>
+</ul>
+<hr>
+@{
+    var loichao = "Xin chào Phan Văn Tài";
+    var age = 20;
+    // Phương thức cục bộ
+    void DisplayInfo(string name)
+    {
+        var msg = $"Xin chào {name}";
+        <p>Lời gọi từ phương thức: @msg</p>
+    }
+}
+
+<p>@loichao</p>
+@if (age >= 18)
+{
+    <p>Bạn @age tuổi, bạn được truy cập</p>
+}
+else
+{
+    <p>Bạn @age tuổi, bạn không được truy cập</p>
+}
+
+@{
+    // Gọi phương thức
+    DisplayInfo("Phan Văn Tài");
+
+    string[] products = new string[]
+    {
+"Iphone X", "Samsung Galaxy S23", "Laptop ThinkPad P15s"
+    };
+
+    foreach (var product in products)
+    {
+        // Nếu muốn xuất nội dung ra mà không nằm trong thẻ nào
+        // thì dùng đến thẻ <text>
+        <text>[@product]</text>
+    }
+
+    <br>
+    <p>Nếu dùng @("@:")</p>
+    foreach (var product in products)
+    {
+        // Nếu muốn xuất nội dung ra mà không nằm trong thẻ nào
+        // thì dùng đến thẻ <text>
+        @: [@product]
+    }
+}
+
+@functions{
+    // Thuộc tính này truy cập được trong toàn bộ file
+    string Title { get; set; } = "Nội dung học Razor page 09/07/2023";
+}

@@ -1,0 +1,32 @@
+@page
+@{
+    Layout = "_Layout";
+}
+
+@section Styles{
+    <style>
+        .link {
+            min-width: 140px;
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            padding: 8px 16px;
+            background: orange;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .link:hover {
+            opacity: 0.9;
+            color: #fff;
+        }
+    </style>
+}
+
+<h1>Trang danh sách sản phẩm</h1>
+<a asp-area="" asp-page="Index" class="link">Về trang Index</a>
+<br>
+<a asp-area="" asp-page="privacy" class="link">Về trang Privacy</a>
+<br>
+<a href="/Privacy" class="link">Về trang Privacy c2</a>
