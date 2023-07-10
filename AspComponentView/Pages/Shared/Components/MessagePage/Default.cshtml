@@ -1,0 +1,19 @@
+@using AspComponentView.Components.MessagePage
+@model Message
+@{
+    Layout = "_Layout";
+    ViewData["title"] = Model.Title;
+}
+
+<div class="card m-4">
+    <div class="card-header bg-danger text-light">
+        <h4>@Model.Title</h4>
+    </div>
+    <div class="card-body">
+        @Html.Raw(Model.HtmlContent)
+    </div>
+
+    <div class="card-footer">
+        Chuyển đến - <a href="@Model.urlRedirect">@Model.urlRedirect</a> sau @Model.secondWait giây
+    </div>
+</div>

@@ -1,0 +1,83 @@
+﻿@page
+@using AspComponentView.Models
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["title-message"] = "Sản phẩm mới";
+    ViewData["content"] = "Bạn đang xem các sản phẩm mới";
+}
+
+<form method="POST">
+    <div style="display: flex; gap: 30px;" class="mb-2">
+        <label for="">Nhập tên của bạn</label>
+        <input type="text" name="username" style="width: 300px; border-radius: 8px; font-size: 15px; color: blue;">
+    </div>
+    <input class="btn btn-success" style="border-radius: 10px;" type="submit" value="Gửi yêu cầu">
+</form>
+
+<div class="text-center">
+    <h1 class="display-5">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+@* Cách chèn Component *@
+@await Component.InvokeAsync("ProductBox", false)
+
+@await Html.PartialAsync("_Message")
+@{
+    // Hoặc using luôn AspComponentView.Models ở _ViewImport.cshtml luôn
+    var product1 = new Product()
+            {
+                Name = "IPhone X",
+                Description = "Điện thoại IphoneX",
+                Price = 10000
+            };
+
+    var product2 = new Product()
+            {
+                Name = "Samsung",
+                Description = "Điện thoại Samsung",
+                Price = 15000
+            };
+
+    var product3 = new Product()
+            {
+                Name = "Laptop",
+                Description = "Laptop ThinkPad",
+                Price = 31000
+            };
+}
+<div class="row bg-info">
+    <div class="col">
+        <partial name="_ProductItem" model="product1" />
+    </div>
+
+    <div class="col">
+        @await Html.PartialAsync("_ProductItem",product2)
+    </div>
+
+    <div class="col">
+        @{
+            // Gọi partial view cách 3 trong khối code
+            await Html.RenderPartialAsync("_ProductItem", product3);
+        }
+    </div>
+</div>
+
+@{
+    var products = new List<Product>()
+{
+new Product(){ Name = "SP 1", Description = "Mô tả cho SP 1", Price = 1000},
+new Product(){ Name = "SP 2", Description = "Mô tả cho SP 2", Price = 2000},
+new Product(){ Name = "SP 3", Description = "Mô tả cho SP 3", Price = 3000},
+new Product(){ Name = "SP 4", Description = "Mô tả cho SP 4", Price = 4000},
+};
+    <div class="row bg-warning">
+        @foreach (var product in products)
+        {
+            <div class="col">
+                <partial name="_ProductItem" model="product" />
+            </div>
+        }
+    </div>
+}

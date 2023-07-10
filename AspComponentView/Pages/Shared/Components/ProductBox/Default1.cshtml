@@ -1,0 +1,11 @@
+@using AspComponentView.Models
+@model List<Product>
+
+<ul class="list-group my-4">
+    @foreach(var product in Model)
+    {
+        <li class="list-group-item">
+            @product.Name, Price: <strong>@product.Price</strong>
+        </li>
+    }
+</ul>

@@ -1,0 +1,60 @@
+@page
+<h1 style="text-align:center;">Trang đăng nhập</h1>
+<style>
+    .container {
+        margin: auto;
+        width: 40%;
+    }
+
+    .row {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .row label {
+        margin-left: 20px;
+        width: 200px;
+    }
+
+    .row input {
+        font-size: 18px;
+        border-radius: 5px;
+        width: 300px;
+    }
+
+    .row-2 {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .row-2 .btn {
+        user-select: none;
+        padding: 8px 16px;
+        background: green;
+        border-radius: 999px;
+    }
+
+    .row-2 .btn:hover {
+        opacity: 0.9;
+    }
+
+    .row-2 .btn-signout {
+        background: orange;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <label for="">Username</label>
+        <input type="text" name="username">
+    </div>
+    <div class="row">
+        <label for="">Password</label>
+        <input type="text" name="password">
+    </div>
+    <div class="row-2">
+        <a class="btn">Đăng nhập</a>
+        <a class="btn btn-signout">Đăng ký</a>
+    </div>
+</div>
