@@ -37,19 +37,19 @@
         <input asp-for="CreatedAt" />
     </div>
     <div class="form-group mb-2">
-        <label for="Gender">Giới tính: </label>
+        <label for="male">Giới tính: </label>
         <div class="form-check form-check-inline">
-            <input type="radio" class="form-check-input" id="Gender" name="Gender" value="Nam" checked>
+            <input type="radio" class="form-check-input" id="male" name="Gender" value="Nam">
             <label class="form-check-label" for="male">Nam</label>
         </div>
         <div class="form-check form-check-inline">
-            <input type="radio" class="form-check-input" id="Gender" name="Gender" value="Nữ">
-            <label class="form-check-label" for="male">Nữ</label>
+            <input type="radio" class="form-check-input" id="female" name="Gender" value="Nữ">
+            <label class="form-check-label" for="female">Nữ</label>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Birthday" class="label-control"></label>
-        <input asp-for="Birthday" value=""/>
+        <input asp-for="Birthday" value="" />
     </div>
     <hr>
     @* Sử dụng HtmlHeper *@
