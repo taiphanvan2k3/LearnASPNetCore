@@ -1,0 +1,46 @@
+﻿@page "/product/{id:int?}"
+@model PageModelExample.Pages.ProductPageModel
+@{
+    var product = Model.Product;
+    var products = Model._productService.GetAllProducts();
+}
+
+@* Dữ liệu này đã thiết lập ở *@
+<h1>@ViewData["Title"]</h1>
+<p>Số sản phẩm: @products.Count</p>
+@if (product != null)
+{
+    <h2>@product.Name</h2>
+    <p>Mô tả: @product.Description</p>
+    <p>Giá: @product.Price</p>
+    <div>
+        @* Phải thiết lập aps-route-id là "" chứ không nó lấy id của trang hiện tại *@
+        <a class="btn btn-info mb-4" asp-page="ProductPage" asp-route-id="">Danh sách sản phẩm</a>
+    </div>
+
+    // Dùng form để Post dữ liệu
+    <form method="POST" asp-page="ProductPage" asp-route-id="@product.Id" asp-page-handler="DeleteProduct">
+        <button class="btn btn-danger" type="submit">Xóa C1</button>
+        <input class="btn btn-danger" type="submit" value="Xóa C2">
+        <a href="#!" class="btn btn-danger" type="submit">Không xóa được</a>
+    </form>
+}
+else
+{
+    <ul class="group-item">
+        @foreach (var p in products)
+        {
+            <li class="list-group-item">
+                <span>
+                    Đi đến <a asp-page="ProductPage" asp-route-id="@p.Id">@p.Name</a>
+                </span>
+            </li>
+        }
+    </ul>
+
+    <hr>
+    // Lúc này AnchorTagHelper
+    <a class="btn btn-primary" asp-page="ProductPage" asp-page-handler="LastProduct">Xem sản phẩm cuối</a>
+    <a class="btn btn-warning" asp-page="ProductPage" asp-page-handler="RemoveAll">Xóa toàn bộ sản phẩm</a>
+    <a class="btn btn-success" asp-page="ProductPage" asp-page-handler="InitProducts">Nạp danh sách sản phẩm</a>
+}

@@ -1,0 +1,13 @@
+@page
+@model ContactRequestModel
+
+@{
+    ViewData["title"] = "Trang liên hệ";
+}
+
+<h1 class="display-4">Trang liên hệ</h1>
+<p class="lead">Điền các thông tin liên hệ</p>
+<hr>
+
+<p>@Model.UserId</p>
+<p>Tổng của 2 và 3 là @Model.Sum(2,3)</p>
