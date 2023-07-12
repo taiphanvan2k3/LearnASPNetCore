@@ -1,0 +1,54 @@
+﻿@page
+@model ValidationExample.Pages.ContactModel
+@{
+}
+
+<h1>Liên hệ</h1>
+@* Để form submit được khi upload file thì phải thêm thuộc tính enctype="multipart/form-data" vào form*@
+<form method="POST" asp-page="Contact" class="m-2 p-3 alert-danger" enctype="multipart/form-data">
+    @* Liệt kê tất cả lỗi *@
+    <div asp-validation-summary="All"></div>
+    <div class="form-group mb-3">
+        <label asp-for="CustomerInfo.CustomerName"></label>
+        <input asp-for="CustomerInfo.CustomerName" class="form-control" />
+        <span asp-validation-for="CustomerInfo.CustomerName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="CustomerInfo.Email"></label>
+        <input asp-for="CustomerInfo.Email" class="form-control" />
+        <span asp-validation-for="CustomerInfo.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="CustomerInfo.YearOfBirth"></label>
+        <input asp-for="CustomerInfo.YearOfBirth" class="form-control" />
+        <span asp-validation-for="CustomerInfo.YearOfBirth" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="FileUpload"></label>
+        <input asp-for="FileUpload" class="form-control" accept=".pdf"/>
+        <span asp-validation-for="FileUpload" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="FileUploads"></label>
+        <input asp-for="FileUploads" class="form-control" accept=".pdf"/>
+        <span asp-validation-for="FileUploads" class="text-danger"></span>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+    </div>
+</form>
+
+<p>Thông tin nhận được</p>
+<p>@Model.ThongBao</p>
+@if (Model.CustomerInfo != null && !Model.ThongBao.Contains("không"))
+{
+    <ul>
+        <li>Username: @Model.CustomerInfo.CustomerName</li>
+        <li>Email: @Model.CustomerInfo.Email</li>
+        <li>Năm sinh: @Model.CustomerInfo.YearOfBirth</li>
+    </ul>
+}
