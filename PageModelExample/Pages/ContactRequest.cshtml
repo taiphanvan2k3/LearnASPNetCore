@@ -1,4 +1,4 @@
-@page
+@page "/contact.html"
 @model ContactRequestModel
 
 @{
@@ -9,5 +9,41 @@
 <p class="lead">Điền các thông tin liên hệ</p>
 <hr>
 
-<p>@Model.UserId</p>
 <p>Tổng của 2 và 3 là @Model.Sum(2,3)</p>
+<form class="bg-light p-2 m-2" method="POST" asp-page="ContactRequest">
+    <div class="mb-3">
+        <label asp-for="UserContact.UserId" class="form-label"></label>
+        @* Dùng <input name="UserName"> cũng được
+        hay <input asp-for="@Model.UserName" /> *@
+        <input asp-for="@Model.UserContact.UserId" class="form-control" />
+        <span asp-validation-for="UserContact.UserId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UserContact.UserName" class="form-label"></label>
+        <input asp-for="UserContact.UserName" class="form-control" />
+        <span asp-validation-for="UserContact.UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UserContact.Email" class="form-label"></label>
+        <input asp-for="UserContact.Email" class="form-control" />
+        <span asp-validation-for="UserContact.Email" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Submit</button>
+</form>
+
+<div class="alert alert-danger">
+    <p><strong>Thông tin User:</strong></p>
+    <ul>
+        <li>UserId: @Model.UserContact.UserId</li>
+        <li>UserName: @Model.UserContact.UserName</li>
+        <li>Email: @Model.UserContact.Email</li>
+    </ul>
+</div>
+
+@section Scripts {
+    @* Nạp section này vào để khi chưa submit thì nó đã validate rồi *@
+    <partial name="_ValidationScriptsPartial" />
+}

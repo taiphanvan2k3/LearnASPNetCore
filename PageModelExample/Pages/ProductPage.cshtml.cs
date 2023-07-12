@@ -35,8 +35,49 @@ namespace PageModelExample.Pages
 
         public Product Product { get; set; }
 
-        public void OnGet(int? id)
+        public void ReadData()
         {
+            // var data = this.Request.Form["id"]
+            // var data = this.Request.Headers["id"]
+            // var data = this.Request.Form["id"]
+            // var data = this.Request.RouteValues["id"]
+
+            var idRouteValue = this.Request.RouteValues["id"];
+            if (idRouteValue != null)
+            {
+                // vd /product/{id: int?} nên id là route values
+                System.Console.WriteLine("id route value: " + idRouteValue.ToString());
+            }
+
+            var idQuery = this.Request.Query["id"];
+            if (!string.IsNullOrEmpty(idQuery))
+            {
+                // url: vd /product?id=2
+                // hoặc url: /product/1?id=2 thì vừa lấy ra được route values, vừa lấy ra được query
+                System.Console.WriteLine("Id query: " + idQuery.ToString());
+            }
+
+            // Đọc header:
+            var header = this.Request.Headers["User-Agent"];
+            if (!string.IsNullOrEmpty(header))
+            {
+                // url: vd /product?id=2
+                // hoặc url: /product/1?id=2 thì vừa lấy ra được route values, vừa lấy ra được query
+                System.Console.WriteLine("User-Agent: " + header.ToString());
+            }
+        }
+
+        private void ReadDataModel(Product product)
+        {
+            System.Console.WriteLine($"Id: {product.Id}");
+            System.Console.WriteLine($"Name: {product.Name}");
+        }
+
+        public void OnGet(int? id, [Bind("Name")]Product product)
+        {
+            // ReadData();
+            ReadDataModel(product);
+
             // url truy cập: /product/2 hoặc /product/
             // Tìm trên route values nếu có thì nó tự động convert thành id
             if (id != null)

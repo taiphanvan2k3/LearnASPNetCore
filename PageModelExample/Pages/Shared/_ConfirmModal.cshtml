@@ -1,0 +1,27 @@
+<!-- Modal -->
+@{
+    var typeName = ViewData["typeName"] ?? "";
+    int id = (int)ViewData["id"];
+    var Page = ViewData["page"] as string;
+    var handler = ViewData["handler"] as string;
+}
+
+<form id="confirmForm" asp-page="@Page" asp-route-id="@id" asp-page-handler="@handler" method="POST">
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cẩn thận cho thao tác này.</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="contentShow">
+                    @typeName này sẽ bị xóa sau khi bạn chọn "Xác nhận"
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" id="confirmButton">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
