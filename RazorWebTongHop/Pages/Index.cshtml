@@ -1,0 +1,35 @@
+﻿@page
+@using RazorWebTongHop.Models
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    var articles = ViewData["articles"] as List<Article>;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<table class="table">
+    <thead>
+        <th>STT</th>
+        <th>Tiêu đề</th>
+        <th>Ngày tạo</th>
+    </thead>
+    <tbody>
+        @{
+            int stt = 1;
+        }
+        @foreach (var article in articles)
+        {
+            <tr>
+                <td>@(stt++)</td>
+                <td>@article.Title</td>
+                <td>@article.CreateAt</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
