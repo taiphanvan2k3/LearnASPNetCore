@@ -1,0 +1,37 @@
+@* Để inject dịch vụ trực tiếp vào View ta sử dụng @inject *@
+@using Microsoft.AspNetCore.Identity
+@using RazorWebTongHop.Models
+@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
+
+@{
+    @* signInManager.IsSignedIn(User); *@
+    @* userManager.GetUserName(User) *@
+}
+<ul class="navbar-nav flex-grow-1">
+    @if (signInManager.IsSignedIn(User))
+    {
+        // Khi có thông tin User đăng nhập
+        // Có thông tin user khi user đã đăng nhập
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-page="/Account/Manage/Index" asp-area="Identity">
+                Xin chào @userManager.GetUserName(User)!
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-page="/Account/Logout" asp-area="Identity">Đăng xuất</a>
+        </li>
+    }
+    else
+    {
+        // Khi không có thông tin User đăng nhập
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-page="/Account/Register" asp-area="Identity">Đăng ký</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-page="/Account/Login" asp-area="Identity">Đăng nhập</a>
+        </li>
+    }
+</ul>
