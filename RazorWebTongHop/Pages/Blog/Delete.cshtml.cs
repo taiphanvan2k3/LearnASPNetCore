@@ -19,7 +19,7 @@ namespace RazorWebTongHop.Pages_Blog
         }
 
         [BindProperty]
-      public Article Article { get; set; }
+        public Article Article { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,7 +34,7 @@ namespace RazorWebTongHop.Pages_Blog
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Article = article;
             }

@@ -20,3 +20,4 @@ Ví dụ: `dotnet new page -n Create -o Pages/BlogMySelf --namespace RazorWebTon
 # Ghi chú:
 - Để không cho người dùng edit 1 input nào đó nhưng vẫn muốn giá trị của nó được submit thì dùng `readonly="readonly"` cho thẻ input đó
 -  Khi dùng `<td>@Html.DisplayFor(model => article.CreateAt)</td>` sẽ lấy giá trị của property CreateAt đồng thời kết hợp thêm các DataAnnotation để hiển thị, cụ thể giá trị dưới CSDL có cả time nhưng ở property là Date nên nó sẽ chỉ hiển thị Date
+- Khi submit dữ liệu từ một form và không cung cấp dữ liệu cho một property của model, thì khi server nhận được yêu cầu, giá trị của property đó trong model sẽ được thiết lập về giá trị mặc định của kiểu dữ liệu tương ứng.

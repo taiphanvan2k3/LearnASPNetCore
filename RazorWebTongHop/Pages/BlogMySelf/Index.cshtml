@@ -1,5 +1,6 @@
 ﻿@page
 @using RazorWebTongHop.Models
+@using RazorWebTongHop.Helper
 @model RazorWebTongHop.Pages.BlogMySelf.IndexModel
 
 @{
@@ -13,7 +14,9 @@
 
 <form method="GET" asp-page="./Index">
     <label>Tìm kiếm</label>
-    <input type="text" name="SearchString">
+    @* Dùng thêm input asp-for ở đây để sau khi submit thì nó sẽ binding vào property SearchString và OnGet trả về Page này thì
+    nhờ có asp-for nên nó sẽ vẫn lưu lại pattern search trước đó *@
+    <input asp-for="SearchString">
     <button>Tìm</button>
 </form>
 
@@ -28,14 +31,14 @@
     </thead>
     <tbody>
         @{
-            int stt = 0;
+            int offset = (Model.CurrentPage - 1) * Model.ITEMS_PER_PAGE;
         }
         @foreach (var article in articles)
         {
             <tr>
-                <td>@(++stt)</td>
+                <td>@(++offset)</td>
                 <td>@article.Title</td>
-                @* Khi dùng DisplayFor thì  *@
+                @* Khi dùng DisplayFor thì *@
                 <td>@Html.DisplayFor(model => article.CreateAt)</td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@article.Id">Chỉnh sửa</a> |
@@ -46,3 +49,19 @@
         }
     </tbody>
 </table>
+
+@* Tạo model truyền qua *@
+@{
+    var pagingModel = new PagingModel()
+            {
+                CurrentPage = Model.CurrentPage,
+                CountPages = Model.CountPages,
+                GenerateUrl = (int? page) =>
+                {
+                    return Url.Page("/BlogMySelf/Index", new { p = page }) + $"&SearchString={Model.SearchString}";
+                }
+            };
+    System.Console.WriteLine(Url.Page("/BlogMySelf/Index"));
+}
+
+<partial name="_Paging" model="pagingModel" />
