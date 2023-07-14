@@ -1,0 +1,48 @@
+﻿@page
+@using RazorWebTongHop.Models
+@model RazorWebTongHop.Pages.BlogMySelf.IndexModel
+
+@{
+    var articles = ViewData["articles"] as List<Article>;
+}
+
+<h1>Trang quản lý Blog</h1>
+<p>
+    <a asp-page="../Index" class="btn btn-info text-light">Về trang Index</a>
+</p>
+
+<form method="GET" asp-page="./Index">
+    <label>Tìm kiếm</label>
+    <input type="text" name="SearchString">
+    <button>Tìm</button>
+</form>
+
+<table class="table">
+    <thead>
+        <th>STT</th>
+        <th>Tiêu đề</th>
+        <th>Ngày tạo</th>
+        <th>
+            <a asp-page="./Create" class="btn btn-success" style="min-width: 100px;">Tạo mới</a>
+        </th>
+    </thead>
+    <tbody>
+        @{
+            int stt = 0;
+        }
+        @foreach (var article in articles)
+        {
+            <tr>
+                <td>@(++stt)</td>
+                <td>@article.Title</td>
+                @* Khi dùng DisplayFor thì  *@
+                <td>@Html.DisplayFor(model => article.CreateAt)</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@article.Id">Chỉnh sửa</a> |
+                    <a asp-page="./Details" asp-route-id="@article.Id">Xem</a> |
+                    <a asp-page="./Delete" asp-route-id="@article.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,34 @@
+﻿@page
+@model RazorWebTongHop.Pages.BlogMySelf.CreateModel
+@{
+}
+
+<h1>Thêm mới Blog</h1>
+<hr>
+<form method="POST">
+    <div class="mb-3">
+        <div class="form-group">
+            <label asp-for="Article.Title"></label>
+            <input asp-for="Article.Title" class="form-control" />
+            <span asp-validation-for="Article.Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+            <label asp-for="Article.CreateAt"></label>
+            <input asp-for="Article.CreateAt" class="form-control" />
+            <span asp-validation-for="Article.CreateAt" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+            <label asp-for="Article.Content"></label>
+            <textarea asp-for="Article.Content" class="form-control"></textarea>
+            <span asp-validation-for="Article.Content" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Tạo mới</button>
+</form>

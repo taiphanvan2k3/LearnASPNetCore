@@ -1,0 +1,39 @@
+﻿@page "/Blogs/xemchitiet/{id:int}"
+@using RazorWebTongHop.Models
+@model RazorWebTongHop.Pages.BlogMySelf.DetailsModel
+@{
+    ViewData["title"] = Model.Article.Title;
+}
+
+<h1>@Model.Article.Title</h1>
+@* Dùng DisplayFor để hiển thị nội dung không bị encode *@
+<p><i>@Html.DisplayFor(model => model.Article.CreateAt)</i></p>
+<hr>
+<p>@Html.Raw(Model.Article.Content)</p>
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Article.Id">Chỉnh sửa</a> | <a asp-page="./Index">Trang danh sách</a>
+</div>
+
+@* <div class="container">
+    <div class="row mb-3">
+        <div class="col col-md-2">
+            <b>@Html.DisplayNameFor(model => model.Article.Title)</b>
+        </div>
+        <div class="col col-md-10">
+            @Html.DisplayFor(model => model.Article.Title)
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col col-md-2">
+            <b>@Html.DisplayNameFor(model => model.Article.CreateAt)</b>
+        </div>
+        <div class="col col-md-10">@Model.Article.CreateAt</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col col-md-2">
+            <b>@Html.DisplayNameFor(model => model.Article.Content)</b>
+        </div>
+        <div class="col col-md-10">@Model.Article.Content</div>
+    </div>
+</div> *@
