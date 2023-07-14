@@ -7,7 +7,14 @@
 # Attribute:
 - Vd có property là DateTime và muốn thiết lập dữ liệu nó lưu dưới DB là Date thì có thể dùng 1 trong 2 cách:
     + `[Column(Typename="date")]`
-    + `[DataType(DataType.Date)]`
+    + Hoặc dùng FluentAPI:
+    ```cs
+    modelBuilder.Entity<Article>()
+        .Property(e => e.CreateAt)
+        .HasColumnType("date");
+    ``` 
+    => Các kiểu dữ liệu khác là tương tự
+- Dùng `[DataType(DataType.Date)]` chỉ giúp thay đổi giá trị hiển thị thôi chứ không ảnh hưởng đến type khi lưu xuống CSDL
 
 # Entity framework:
 - `dotnet-ef database drop -f` để xóa Db mà không hỏi yes/no
