@@ -66,7 +66,7 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
+            // [EmailAddress]
             public string Email { get; set; }
 
             /// <summary>
@@ -112,6 +112,8 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                
+                // Chú ý là PasswordSignInAsync cần truyền vào là Username và Password chứ không phải Email và Password
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {

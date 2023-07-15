@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using RazorWebTongHop.Models;
 
 namespace RazorWebTongHop.Pages.BlogMySelf
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly DataContext _context;
@@ -39,9 +41,9 @@ namespace RazorWebTongHop.Pages.BlogMySelf
             // Tính toán tổng số record sau khi query và trước khi Skip,Take
             int totalArticle = (await query.ToListAsync()).Count;
 
-            var articles = await query.Skip((CurrentPage - 1) * ITEMS_PER_PAGE)
+            var articles = await query.OrderByDescending(a => a.CreateAt)
+                                    .Skip((CurrentPage - 1) * ITEMS_PER_PAGE)
                                     .Take(ITEMS_PER_PAGE)
-                                    .OrderByDescending(a => a.CreateAt)
                                     .ToListAsync();
 
             CountPages = (int)Math.Ceiling(totalArticle * 1.0 / ITEMS_PER_PAGE);

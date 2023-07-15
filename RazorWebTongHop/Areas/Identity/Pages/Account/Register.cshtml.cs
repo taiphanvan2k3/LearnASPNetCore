@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -71,32 +72,26 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [EmailAddress]
+            [DisplayName("Tên tài khoản")]
+            [Required(ErrorMessage = "{0} phải nhập")]
+            [StringLength(100, ErrorMessage = "{0} phải dài từ {2} đến {1} kí tự.", MinimumLength = 3)]
+            public string Username { get; set; }
+
+            [Required(ErrorMessage = "Phải nhập {0}")]
+            [EmailAddress(ErrorMessage = "Sai định dạng Email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} phải dài từ {2} đến {1} kí tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mật khẩu")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Lặp lại mật khẩu")]
+            // Dùng Compare để so sánh ConfirmPassword có giống Password không
+            [Compare("Password", ErrorMessage = "Mật khẩu lặp lại không chính xác")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -109,42 +104,74 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            // Converts a virtual (relative, starting with ~/) path to an application absolute path.
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                // Thực chất là: var user = new AppUser();
+                /* Thư viện tạo ra: 
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None); 
+                */
+                var user = new AppUser()
+                {
+                    UserName = Input.Username,
+                    Email = Input.Email
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("Đã tạo user mới");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
+                    // Sinh ra 1 đường link gửi đến email của người đăng ký
+                    
+                    // Phát sinh ra mã token để xác nhận email
+                    // Mã token này dựa theo thông tin của user, mỗi token là duy
+                    // nhất cho thông tin user
+                    // Khi người dùng mở email ra và nhấn vào url thì sẽ gửi lại mã token
+                    // này đến lại server thì lúc này server sẽ biết được email mà người dùng
+                    // đăng ký đó là có thật
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    
+                    var userId = await _userManager.GetUserIdAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                    // Phát sinh ra url: http://localhost:../Identity/Account/ConfirmEmail?userId=...&code=...&returnUrl=...
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
+                        // Thiết lập area để biết trang này nằm trong area nào?
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    // _emailSender chính là SendMailService đã xây dựng
+                    await _emailSender.SendEmailAsync(Input.Email, "Xác nhận địa chỉ email",
+                        $"Bạn đã đăng ký tài khoản trên Razorweb, hãy <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>bấm vào đây</a> để kích hoạt tài khoản.");
 
+                    // Kiểm tra xem configure ứng dụng tại Program.cs xem là có yêu cầu xác thực email trước khi đăng nhập không
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        // Trang RegisterConfirmation.cshtml chỉ được gọi khi người dùng đăng ký tài khoản mới
+                        // và trong ứng dụng có thiết lập xác thực email rồi mới cho đăng nhập
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
+                        // Nếu không yêu cầu xác thực thì khi đăng ký xong, ứng dụng sẽ đăng nhập ngay
+                        // cho user. Khi isPersistent là true thì sẽ thiết lập cookie để nhớ thông tin user
+                        // để lần sau truy cập lại mà không cần đăng nhập
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
+
+                // Nếu có lỗi gì thì thiết lập vào ModelState để thông báo lỗi
+                // lên form cho người dùng biết
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

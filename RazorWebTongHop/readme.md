@@ -1,3 +1,7 @@
+# Ghi chú:
+- Để không cho người dùng edit 1 input nào đó nhưng vẫn muốn giá trị của nó được submit thì dùng `readonly="readonly"` cho thẻ input đó
+-  Khi dùng `<td>@Html.DisplayFor(model => article.CreateAt)</td>` sẽ lấy giá trị của property CreateAt đồng thời kết hợp thêm các DataAnnotation để hiển thị, cụ thể giá trị dưới CSDL có cả time nhưng ở property là Date nên nó sẽ chỉ hiển thị Date
+- Khi submit dữ liệu từ một form và không cung cấp dữ liệu cho một property của model, thì khi server nhận được yêu cầu, giá trị của property đó trong model sẽ được thiết lập về giá trị mặc định của kiểu dữ liệu tương ứng.
 # Các package cần sử dụng khi làm việc với EF sử dụng Sqlserver:
 - dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 - dotnet add package Microsoft.EntityFrameworkCore.Design
@@ -15,7 +19,6 @@
     ``` 
     => Các kiểu dữ liệu khác là tương tự
 - Dùng `[DataType(DataType.Date)]` chỉ giúp thay đổi giá trị hiển thị thôi chứ không ảnh hưởng đến type khi lưu xuống CSDL
-
 # Entity framework:
 - `dotnet-ef database drop -f` để xóa Db mà không hỏi yes/no
 - Có thể tạo ra dữ liệu mẫu bằng thư viện Bogus: `dotnet add package Bogus --version 34.0.2`
@@ -23,12 +26,6 @@
     + Lưu ý: Để chạy được thì cài thêm package: `Microsoft.EntityFrameworkCore.Tools`
 - Nếu tạo 1 page trong 1 thư mục nào đó: dotnet new page -n `<tên page>`  -o `<thư mục lưu>` -p:n (hoặc --namespace) `<tên namespace>`  
 Ví dụ: `dotnet new page -n Create -o Pages/BlogMySelf --namespace RazorWebTongHop.Pages.BlogMySelf`
-
-# Ghi chú:
-- Để không cho người dùng edit 1 input nào đó nhưng vẫn muốn giá trị của nó được submit thì dùng `readonly="readonly"` cho thẻ input đó
--  Khi dùng `<td>@Html.DisplayFor(model => article.CreateAt)</td>` sẽ lấy giá trị của property CreateAt đồng thời kết hợp thêm các DataAnnotation để hiển thị, cụ thể giá trị dưới CSDL có cả time nhưng ở property là Date nên nó sẽ chỉ hiển thị Date
-- Khi submit dữ liệu từ một form và không cung cấp dữ liệu cho một property của model, thì khi server nhận được yêu cầu, giá trị của property đó trong model sẽ được thiết lập về giá trị mặc định của kiểu dữ liệu tương ứng.
-
 # Sử dụng thư viện Identity
 - Cung cấp chức năng để quản lý người dùng như đăng kí, đăng nhập, xác thực tài khoản, xác định quyền truy cập đến các tài nguyên của ứng dụng.
 - Các package quan trọng cần add: 
@@ -124,10 +121,16 @@ services.AddSingleton<IEmailSender, SendMailService>();
 ![Alt text](./images/image3.png)
 - Phát sinh cá trang identity để tự custom lại:
 dotnet aspnet-codegenerator identity -dc RazorWebTongHop.Models.DataContext
-+ Nếu trong Program.cs đã thiết lập: thì phải comment lại trước khi chạy lệnh termninal đó.
++ Nếu trong Program.cs đã thiết lập AddIdentity rồi thì phải comment lại trước khi chạy lệnh termninal đó.
 Nếu không thì sẽ bị quăng ra lỗi `Microsoft.AspNetCore.Identity.IdentityBuilderExtensions.AddDefaultTokenProviders(Microsoft.AspNetCore.Identity.IdentityBuilder)' and 'Microsoft.AspNetCore.Identity.IdentityBuilderExtensions.AddDefaultTokenProviders(Microsoft.AspNetCore.Identity.IdentityBuilder)`
 ```cs
+// Cần comment đoạn này lại
 services.AddDefaultIdentity<AppUser>()
         .AddEntityFrameworkStores<DataContext>()
         .AddDefaultTokenProviders();
 ```
+# Tùy biến (Customize) trang Register, RegisterConfirmation, ConfirmEmail (15/07/2023)
+- Thêm `[Authorize]` vào đầu các PageModel để chuyển hướng đến trang đăng nhập nếu người dùng chưa đăng nhập khi truy cập các trang này
+- Do PageModel `Register` có đăng kí vào dịch vụ là `IEmailSender` nên đó là lí do ta tạo `SendMailService` implement `IEmailSender` và thêm dịch vụ vừa tạo vào ứng dụng kiểu `services.AddSingleton<IEmailSender, SendMailService>();`
+- Màn hình khi hoàn tất việc đăng ký tài khoản và cần thêm bước xác thực tại email
+![Alt text](./images/image4.png)

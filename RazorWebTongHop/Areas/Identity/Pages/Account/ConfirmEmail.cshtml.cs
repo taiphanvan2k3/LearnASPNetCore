@@ -18,10 +18,12 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public ConfirmEmailModel(UserManager<AppUser> userManager)
+        public ConfirmEmailModel(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -30,6 +32,14 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
+
+        /// <summary>
+        /// Phương thức này sẽ được gọi khi người dùng nhấn vào url trong gửi ở email.
+        /// Khi nhấn vào url sẽ tiến hành binding các tham số trên query vào userId, code
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
             if (userId == null || code == null)
@@ -37,15 +47,34 @@ namespace RazorWebTongHop.Areas.Identity.Pages.Account
                 return RedirectToPage("/Index");
             }
 
+            // Tìm user theo userId, kiểu dữ liệu trả về là 1 đối tượng AppUser
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Không tìm thấy User có Id = '{userId}'.");
             }
 
+            // Lần trước gửi email đi đã encode mã token bằng base64, thì giờ nhận lại
+            // phải decode trở lại
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+
+            // So khớp thông tin user và mã token
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? "Email đã được xác thực." : "Lỗi xác thực email.";
+
+            /* Nếu thành công thì đăng nhập luôn, do đó cần inject SignInManager vào PageModel
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToPage("/Index");
+            }
+            else
+            {
+                return Content("Lỗi xác thực email.");
+            } 
+            */
+
+            // Hoặc hiển thị đã xác nhận email thành công.
             return Page();
         }
     }
