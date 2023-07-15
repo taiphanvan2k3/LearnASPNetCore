@@ -122,3 +122,12 @@ services.Configure<MailSettings>(mailSettings);
 services.AddSingleton<IEmailSender, SendMailService>();
 ```
 ![Alt text](./images/image3.png)
+- Phát sinh cá trang identity để tự custom lại:
+dotnet aspnet-codegenerator identity -dc RazorWebTongHop.Models.DataContext
++ Nếu trong Program.cs đã thiết lập: thì phải comment lại trước khi chạy lệnh termninal đó.
+Nếu không thì sẽ bị quăng ra lỗi `Microsoft.AspNetCore.Identity.IdentityBuilderExtensions.AddDefaultTokenProviders(Microsoft.AspNetCore.Identity.IdentityBuilder)' and 'Microsoft.AspNetCore.Identity.IdentityBuilderExtensions.AddDefaultTokenProviders(Microsoft.AspNetCore.Identity.IdentityBuilder)`
+```cs
+services.AddDefaultIdentity<AppUser>()
+        .AddEntityFrameworkStores<DataContext>()
+        .AddDefaultTokenProviders();
+```

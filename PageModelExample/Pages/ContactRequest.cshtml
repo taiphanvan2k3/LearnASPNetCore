@@ -15,7 +15,9 @@
         <label asp-for="UserContact.UserId" class="form-label"></label>
         @* Dùng <input name="UserName"> cũng được
         hay <input asp-for="@Model.UserName" /> *@
-        <input asp-for="@Model.UserContact.UserId" class="form-control" />
+
+        @* Thêm value =""  để không nhận giá trị mặc định của int là 0*@
+        <input asp-for="@Model.UserContact.UserId" class="form-control" value="" />
         <span asp-validation-for="UserContact.UserId" class="text-danger"></span>
     </div>
 

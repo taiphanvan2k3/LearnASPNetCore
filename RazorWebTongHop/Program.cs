@@ -16,21 +16,20 @@ services.Configure<MailSettings>(mailSettings);
 services.AddSingleton<IEmailSender, SendMailService>();
 
 builder.Services.AddRazorPages();
-services.AddDbContext<DataContext>(options =>
-{
-    string connectionString = builder.Configuration.GetConnectionString("MyBlogContext");
-    options.UseSqlServer(connectionString);
-});
+string connectionString = builder.Configuration.GetConnectionString("MyBlogContext");
+
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
 
 // Đăng kí Identity
-// services.AddIdentity<AppUser, IdentityRole>()
-//         .AddEntityFrameworkStores<DataContext>()
-//         .AddDefaultTokenProviders();
-
-// Sử dụng trang mặc định
-services.AddDefaultIdentity<AppUser>()
+services.AddIdentity<AppUser, IdentityRole>()
         .AddEntityFrameworkStores<DataContext>()
         .AddDefaultTokenProviders();
+
+// Sử dụng trang mặc định
+// services.AddDefaultIdentity<AppUser>()
+//         .AddEntityFrameworkStores<DataContext>()
+//         .AddDefaultTokenProviders();
 
 // Truy cập IdentityOptions
 services.Configure<IdentityOptions>(options =>
