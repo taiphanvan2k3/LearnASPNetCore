@@ -1,15 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RazorWebTongHop.Models;
 
 namespace RazorWebTongHop.Pages_Blog
 {
+    /// <summary>
+    /// Nếu không có Authorize thì chỉ cần nhập đúng URL là có thể truy cập được trang này
+    /// Vd: http://localhost:5272/Blog/Edit?id=2 là có thể truy cập được. Nhưng khi dùng thêm
+    /// Authorize thì buộc phải login mới có thể truy cập được trang
+    /// </summary>
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly RazorWebTongHop.Models.DataContext _context;
